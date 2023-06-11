@@ -1,5 +1,9 @@
 const express = require('express'); 
+const bcrypt = require('bcrypt'); 
+const bodyParser = require('body-parser');
+const session = require('express-session');
 const mime = require('mime');
+
 const app = express();
 var path = require('path');
 const mysql = require('mysql');
@@ -14,6 +18,42 @@ const connection = mysql.createConnection({
   database: 'account_books'
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(
+  session({
+    secret: 'your_session_secret', // 세션 암호화를 위한 비밀키
+    resave: false,
+    saveUninitialized: true
+  })
+);
+
+// const user = {
+//   username:'test@test.com',
+//   password:'test1234'
+// };
+
+
+// // Hash the password with bcrypt.
+// const salt = bcrypt.genSaltSync(10);
+// const hashedPassword = bcrypt.hashSync(user.password, salt);
+
+// connection.connect((err)=> {
+//   if(err) {
+//     throw err;
+//   }
+  
+//   const sql =`insert into users ( username, password) values (? ,?);`;
+//   connection.query(sql, [user.username, hashedPassword], (err, result) => {
+//     if(err) {
+//       throw err; 
+//     }
+    
+//     console.log('user created successfully');
+//   })
+// });
+
+
 
 
 app.use(express.static(path.join(__dirname, 'www')));
@@ -27,12 +67,33 @@ mime.define({
 
 
 
-app.get('/', (req,res)=>{
-  res.sendFile(__dirname+'/index.html');
+app.get('/login', (req,res)=>{
+  res.sendFile(__dirname+'/login.html');
+});
+
+app.get('/Analyze', (req,res)=>{
+  if (req.session.username) {
+    res.sendFile(__dirname+'/Analyze.html');
+  }
 });
 
 app.get('/calandar', (req,res)=>{
-  res.sendFile(__dirname+'/calandar.html');
+  if (req.session.username) {
+    res.sendFile(__dirname+'/calandar.html');
+  }
+});
+
+
+
+app.get('/logout',(req, res) => {
+  req.session.destroy((err) => {
+    if(err) {
+      console.error('Error destroying session:', err);
+      res.sendStatus(500);
+      return;
+    }
+  });
+  res.redirect('/login');
 });
 
 
@@ -60,7 +121,35 @@ app.get('/data', (req, res) => {
   });
 });
 
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
 
+  console.log(username);
+  console.log(password);
+  connection.query(`select * from users where username = ?`, [username], (err, rows) => {
+    if(err){
+      console.log(err);
+      res.send(500);
+    } else if(rows.length == 0){
+      console.log(rows[0].username);
+      res.send(401);
+    } else {
+      const isMatch = bcrypt.compareSync(password, rows[0].password);
+
+      if(isMatch){
+        req.session.username = username;
+        res.redirect('/Analyze')
+      }else{
+        res.send(401);
+      }
+    }
+  });
+});
+
+app.get('/', (req,res)=>{
+  res.redirect('/login');
+});
 
 
 app.listen(3000,(err)=>{

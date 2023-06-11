@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+ <!-- <script src="https://requirejs.org/docs/release/2.3.6/comments/require.js"></script>-->
   <link href="css/bootstrap.css" rel="stylesheet">
   <script src="js/bootstrap.js"></script>
   <title>Document</title>
@@ -22,7 +23,7 @@
       <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
       <div class="navbar-nav">
         <div class="nav-item text-nowrap">
-          <a class="nav-link px-3" href="#">Sign out</a>
+          <a class="nav-link px-3" href="/logout">Sign out</a>
         </div>
       </div>
     </header>
@@ -47,20 +48,18 @@
             </ul>
           </div>
         </nav>
-    
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <div>
-                <canvas id="myChart"></canvas>
-              </div>
-              
-              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-              
-              
-    
-          <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="616" height="60" style="display: block; width: 616px; height: 60px;"></canvas>
-    
-          <h2>Section title</h2>
-          <div class="table-responsive">
+        
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-secondary">
+          <div class="my-4"></div>
+          <div class="bg-light rounded">
+            <canvas id="myChart" style="position: relative; height:600px"></canvas>
+          </div>
+            
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!--          <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>-->
+            
+            <div class="my-4">  </div>
+            <div class="p-3 table-responsive bg-light rounded">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
@@ -76,14 +75,103 @@
               </tbody>
             </table>
             <script>
+              
+
               fetch('/data')
                 .then(response => response.json())
                 .then(data => {
                   const labels1 = data.map(person => person.date_income);
                   const data1 = data.map(person => person.income);
 
+    
+                  // require.config({
+                  //   paths: {
+                  //     echarts: 'https://cdn.jsdelivr.net/npm/echarts/dist'
+                  //   }
+                  // });
+
+                  // require(
+                  //   [
+                  //     'echarts',
+                  //     'echarts/theme/limitless',
+                  //     'echarts/chart/bar',
+                  //     'echarts/chart/line'
+                  //   ],
+                  //   // Charts setup
+                  //   function (ec, limitless) {
+
+                  //     //
+                  //     // Stacked area options
+                  //     //
+
+                  //     chart_area_options = {
+
+                  //       // Setup grid
+                  //       grid: {
+                  //         x: 70,
+                  //         x2: 25,
+                  //         y: 35,
+                  //         y2: 25
+                  //       },
+
+                  //       // Add tooltip
+                  //       tooltip: {
+                  //         trigger: 'axis'
+                  //       },
+
+                  //       // Add legend
+                  //       legend: {
+                  //         data: ['수수료', '수익금'/*, '총매수액', '총매도액', '총거래액'*/]
+                  //       },
+
+                  //       // Add horizontal axis
+                  //       xAxis: [{
+                  //         type: 'category',
+                  //         boundaryGap: false,
+                  //         //data: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+                  //         data: [ '2023-05-01','2023-05-02','2023-05-04', ]
+                  //       }],
+
+                  //       // Add vertical axis
+                  //       yAxis: [{
+                  //         type: 'value'
+                  //       }],
+
+                  //       // Add series
+                  //       series: [
+                  //         {
+                  //           name: '수익금',
+                  //           type: 'line',
+                  //           //stack: 'Total',
+                  //           itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                  //           data: [ '-463.6642','506.44','3808', ]
+                  //         },
+                  //         {
+                  //           name: '수수료',
+                  //           type: 'line',
+                  //           //stack: 'Total',
+                  //           itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                  //           data: [ '248','120','1005', ]
+                  //         },
+
+                  //       ]
+                  //     };
+
+                    //   var chart_area = ec.init(document.getElementById('myChart'), limitless);
+
+                    //   chart_area.setOption(chart_area_options);
+
+                    //   $(window).on('resize', function () {
+                    //     setTimeout(function () {
+                    //       chart_area.resize();
+
+                    //     }, 200);
+                    //   });
+                    // });
+		
+                    
                   const ctx = document.getElementById('myChart').getContext('2d');
-      
+
                   const myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -95,6 +183,7 @@
                       }]
                     },
                     options: {
+                      maintainAspectRatio: false,
                       scales: {
                         yAxes: [{
                           ticks: {

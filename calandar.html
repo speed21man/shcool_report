@@ -22,7 +22,7 @@
       <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
       <div class="navbar-nav">
         <div class="nav-item text-nowrap">
-          <a class="nav-link px-3" href="#">Sign out</a>
+          <a class="nav-link px-3" href="/logout">Sign out</a>
         </div>
       </div>
     </header>
@@ -39,7 +39,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/">
+                <a class="nav-link" href="/Analyze">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                   Analyze
                 </a>
@@ -48,9 +48,9 @@
           </div>
         </nav>
     
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-secondary" style="position: relative; height:100vh;">
           <h2>Section title</h2>
-            <div class="table-responsive">
+            <div class="p-3 table-responsive bg-light rounded">
               <table class="table table-striped table-sm" height="50">
                 <caption>April 2023</caption>
                 <thead>
@@ -112,6 +112,9 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+            
+            
         </main>
       </div>
     </div>
