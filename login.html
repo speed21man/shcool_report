@@ -6,7 +6,7 @@
         <meta name="description" content="">
         <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
         <meta name="generator" content="Hugo 0.88.1">
-        <title>Signin Template · Bootstrap v5.1</title>
+        <title>로그인 · Bootstrap v5.1</title>
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
             <!-- Bootstrap core CSS -->
@@ -73,15 +73,22 @@
     </head>
     <body class="text-center">
         <main class="form-signin">
+
             <form action="/login" method="post">
-                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+              
+                <div class="mb-3 fs-2 fw-bolder">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="10%" height="10%" fill="currentColor" class="bi bi-bank" viewBox="0 0 18 18">
+                    <path d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.501.501 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89L8 0ZM3.777 3h8.447L8 1 3.777 3ZM2 6v7h1V6H2Zm2 0v7h2.5V6H4Zm3.5 0v7h1V6h-1Zm2 0v7H12V6H9.5ZM13 6v7h1V6h-1Zm2-1V4H1v1h14Zm-.39 9H1.39l-.25 1h13.72l-.25-1Z"/>
+                  </svg>
+                  가계부 홈페이지
+                </div>
 
                 <div class="form-floating">
-                <input type="email" name="username" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input type="text" id="username" name="username" class="form-control" id="floatingInput" placeholder="id">
                 <label for="floatingInput">Email address</label>
                 </div>
                 <div class="form-floating">
-                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input type="password" id="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Password</label>
                 </div>
 
@@ -90,9 +97,104 @@
                     <input type="checkbox" value="remember-me"> Remember me
                 </label>
                 </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit" value="Login">Sign in</button>
-                <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
+                <button class="w-100 btn btn-lg btn-primary" id="loginButton"type="submit" value="Login" disabled>로그인</button>
+
+                <!-- <p class="mt-5 mb-3 text-muted">© 2017–2021</p> -->
+                <script>
+                  // 입력 필드와 버튼 요소 가져오기
+                  const emailInput = document.getElementById('username');
+                  const passwordInput = document.getElementById('password');
+                  const loginButton = document.getElementById('loginButton');
+
+                  // 입력 필드의 값이 변경될 때마다 이벤트 처리
+                  emailInput.addEventListener('input', updateButtonState);
+                  passwordInput.addEventListener('input', updateButtonState);
+
+                  // 버튼 상태 업데이트 함수
+                  function updateButtonState() {
+                    const vEmail = emailInput.value.trim();
+                    const vPassword = passwordInput.value.trim();
+                    console.log(vEmail);
+
+                    // 버튼 상태 업데이트
+                    if (vEmail !== '' && vPassword!=='') {
+                      loginButton.disabled = false; // 버튼 활성화
+                    } else {
+                      loginButton.disabled = true; // 버튼 비활성화
+                    }
+                  }
+
+                </script>
+
             </form>
+
+
+
+          <button class="w-100 btn btn-lg mt-3 btn-secondary" data-bs-toggle="modal" data-bs-target="#popup_box">회원가입</button>
+          <form action="/signup" method="post">
+            <div class="modal fade" id="popup_box">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">회원 가입</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-floating mb-3">
+                      <input type="text" id="join_email" name="join_email" class="form-control" id="floatingInput" placeholder="id">
+                      <label for="floatingInput">Email address</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input type="password" id="join_password" name="join_password" class="form-control" id="passwordInput" placeholder="Password">
+                      <label for="passwordInput">비밀번호</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input type="password" id="join_conf_password" name="join_conf_password" class="form-control" id="passwordInput" placeholder="Password">
+                      <label for="passwordInput">확인 비밀번호</label>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-primary" id="signupButton" value="signup" disabled>회원가입</button>
+                  </div>
+                </div>
+
+
+                <script>
+                  // 입력 필드와 버튼 요소 가져오기
+                  const join_email = document.getElementById('join_email');
+                  const join_password = document.getElementById('join_password');
+                  const join_conf_password = document.getElementById('join_conf_password');
+                  const signupButton = document.getElementById('signupButton');
+
+                  // 입력 필드의 값이 변경될 때마다 이벤트 처리
+                  join_email.addEventListener('input', updateButtonState);
+                  join_password.addEventListener('input', updateButtonState);
+                  join_conf_password.addEventListener('input', updateButtonState);
+
+                  // 버튼 상태 업데이트 함수
+                  function updateButtonState() {
+                    const vjoin_email = join_email.value.trim();
+                    const vjoin_password = join_password.value.trim();
+                    const vjoin_conf_password = join_conf_password.value.trim();
+
+
+                    // 버튼 상태 업데이트
+                    if (vjoin_email !== '' && vjoin_password!=='' && vjoin_conf_password!=='') {
+                      if(vjoin_password == vjoin_conf_password) {
+                        signupButton.disabled = false; // 버튼 활성화
+                      }
+                    } else {
+                      signupButton.disabled = true; // 버튼 비활성화
+                    }
+                  }
+                </script>
+              </div>
+            </div>
+          </form>
         </main>
+
+
     </body>
 </html>
